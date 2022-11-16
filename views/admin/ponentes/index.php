@@ -47,3 +47,6 @@
     <p class="text-center">No Hay Ponentes, Ingrese Un Ponente</p>
   <?php } ?>
 </div>
+<?php 
+  echo $paginacion;
+?>
