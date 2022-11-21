@@ -6,6 +6,13 @@ function debuguear($variable) : string {
     echo "</pre>";
     exit;
 }
+
+function debuguearJSON($array=[]) : string {
+    header('Content-Type: application/json');
+    echo json_encode($array);
+    exit;
+}
+
 function s($html) : string {
     $s = htmlspecialchars($html);
     return $s;

@@ -15,9 +15,11 @@ class ApiEventos {
 
     if (!$dia_id || !$categoria_id) {
       echo json_encode([]);
+      return;
     }
 
     // Consultar la bd
-    // $eventos = EventoHorario
+    $eventos = EventoHorario::whereArray(['dia_id' => $dia_id, 'categoria_id' => $categoria_id]) ?? [];
+    debuguearJSON(($eventos));
   }
 }
