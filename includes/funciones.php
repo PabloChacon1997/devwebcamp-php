@@ -9,7 +9,7 @@ function debuguear($variable) : string {
 
 function debuguearJSON($array=[]) : string {
     header('Content-Type: application/json');
-    echo json_encode($array);
+    echo json_encode($array, JSON_UNESCAPED_SLASHES);
     exit;
 }
 
