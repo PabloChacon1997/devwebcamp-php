@@ -13,6 +13,11 @@ function debuguearJSON($array=[]) : string {
     exit;
 }
 
+function verJSON($array=[]) :void {
+    header('Content-Type: application/json');
+    echo json_encode($array, JSON_UNESCAPED_SLASHES);
+}
+
 function s($html) : string {
     $s = htmlspecialchars($html);
     return $s;
