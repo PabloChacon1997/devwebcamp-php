@@ -8,6 +8,7 @@ use Model\Evento;
 use Model\Hora;
 use Model\Paquete;
 use Model\Ponente;
+use Model\Regalo;
 use Model\Registro;
 use Model\Regsitro;
 use Model\Usuario;
@@ -138,9 +139,57 @@ class RegistroController {
       }
     }
 
+    $regalos = Regalo::all('ASC');
+
+    // Manejando el registro mediante POST
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      // Revisar que el usuario este autenticado
+      if (!is_auth()) {
+        header('Location: /login');
+      }
+
+      $eventos = explode(',', $_POST['eventos']);
+      if (empty($eventos)) {
+        verJSON(['resultado' => false]);
+        return;
+      }
+
+      // Obtener el registro del usuario
+      $registro = Registro::where('usuario_id', $_SESSION['id']);
+      if (!isset($registro) || $registro->paquete_id !== "1") {
+        verJSON(['resultado' => false]);
+        return;
+      }
+
+      $eventos_array = [];
+
+      // Validar la disponibilidad de los eventos seleccionados
+      foreach($eventos as $evento_id) {
+        $evento = Evento::find($evento_id);
+        // Comprobar que el evento exista
+        if (!isset($evento) || $evento->disponibles === "0") {
+          verJSON(['resultado' => false]);
+          return;
+        }
+
+        $eventos_array[] = $evento;
+
+      }
+
+      // debuguear($eventos_array);
+
+      foreach($eventos_array as $evento) {
+        $evento->disponibles -= 1;
+        $evento->guardar();
+
+        // Alamcenar registros
+      }
+    }
+
     $router->render('registro/conferencias', [
       'titulo' => 'Elige Workshops y Conferencias',
       'eventos' => $eventos_formateados,
+      'regalos' => $regalos,
     ]);
   }
 }
