@@ -138,9 +138,10 @@ class RegistroController {
     }
 
     // Redireccionar a voleto virtual en caso de finalizar el registro
-    if (isset($registro->regalo_id) && $registro->paquete_id === "1") {
-      header('Location: /boleto?id='.urlencode($registro->token));
-      return;
+    if( $registro->regalo_id === 1 && $registro->paquete_id === "1" ) {
+      header('Location: /finalizar-registro/conferencias');
+    } else if($registro->regalo_id != 1)  {
+      header('Location: /boleto?id=' . urlencode($registro->token));
     }
 
     $eventos = Evento::ordenar('hora_id', 'ASC');
